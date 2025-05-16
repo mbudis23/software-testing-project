@@ -56,5 +56,4 @@ Sistem pembayaran pajak online adalah aplikasi web yang memungkinkan masyarakat 
 ## Catatan Tambahan
 
 - Sistem saat ini hanya mensimulasikan proses pembayaran dan belum terintegrasi dengan sistem perpajakan resmi.
-- Autentikasi sederhana menggunakan nama dan nomor KTP bertujuan untuk memverifikasi identitas dasar tanpa membuat akun.
-- Pada versi selanjutnya, dapat ditambahkan fitur simpan riwayat berdasarkan KTP atau cetak bukti dalam bentuk PDF.
+- Autentikasi sederhana menggunakan nama dan nomor KTP bertujuan untuk memverifikasi identitas dasar tanpa membuat akun.d
