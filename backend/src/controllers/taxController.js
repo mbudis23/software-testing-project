@@ -15,7 +15,7 @@ const submitTaxPayment = async (req, res) => {
 
   if (!tax_type || !amount || isNaN(amount) || amount <= 0) {
     return res.status(400).json({ error: "Invalid tax type or amount" });
-}
+  }
 
 
   try {
@@ -47,5 +47,21 @@ const submitTaxPayment = async (req, res) => {
   }
 };
 
+const getTaxStatus = async (req, res) => {
+  const { referenceId } = req.params;
 
-module.exports = { submitTaxPayment };
+  try {
+    const paymentRef = admin.database().ref(`tax_payments/${referenceId}`);
+    const paymentSnapshot = await paymentRef.get();
+
+    if (!paymentSnapshot.exists()) {
+      return res.status(404).json({ error: "Tax payment request not found" });
+    }
+
+    res.status(200).json(paymentSnapshot.val());
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while retrieving tax payment status: " + error.message });
+  }
+};
+
+module.exports = { submitTaxPayment, getTaxStatus };
