@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require("cors");
-const dotenv = require("dotenv");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-dotenv.config();
+const userRoutes = require("../src/routes/userRoutes");
+
+app.use("/user", userRoutes);
 
 // Run the server
 const PORT = process.env.PORT || 3000;
