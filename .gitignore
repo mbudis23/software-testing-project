@@ -100,3 +100,6 @@ docker-compose.override.yml
 *.tmp
 *.swp
 *.orig
+
+# Service account keys
+serviceAccountKey.json

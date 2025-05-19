@@ -8,7 +8,6 @@ app.use(express.json());
 
 dotenv.config();
 
-
 // Run the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
