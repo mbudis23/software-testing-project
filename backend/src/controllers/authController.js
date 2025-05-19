@@ -1,4 +1,5 @@
 const admin = require("../../configs/firebaseConfig");
+const bcrypt = require("bcrypt");
 const Account = require("../models/Account");
 
 const isValidNpwp = (npwp) => /^[0-9]{6}$/.test(npwp);
@@ -27,9 +28,11 @@ const signup = async (req, res) => {
       return res.status(400).json({ error: "Email already in use" });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
     const userRecord = await admin.auth().createUser({ email, password });
 
-    const newAccount = new Account(email, npwp);
+    const newAccount = new Account(email, hashedPassword, npwp);
     await admin.database().ref(`accounts/${userRecord.uid}`).set(newAccount);
 
     res.status(201).json({

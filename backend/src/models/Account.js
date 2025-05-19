@@ -1,6 +1,7 @@
 class Account {
-  constructor(email, npwp) {
+  constructor(email, hashedPassword, npwp) {
     this.email = email;
+    this.hashedPassword = hashedPassword;
     this.npwp = npwp;
   }
 }

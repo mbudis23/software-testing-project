@@ -1,4 +1,6 @@
+const bcrypt = require("bcrypt");
 const { signup } = require("../../src/controllers/authController");
+const admin = require("../../configs/firebaseConfig");
 
 describe("Signup Function Tests", () => {
   test("Successfully sign up with valid email and NPWP", async () => {
@@ -8,6 +10,15 @@ describe("Signup Function Tests", () => {
     await signup(req, res);
 
     expect(res.status).toHaveBeenCalledWith(201);
+
+    const userRef = admin.database().ref(`accounts/${res.json.mock.calls[0][0].userId}`);
+    const userSnapshot = await userRef.get();
+    const storedData = userSnapshot.val();
+
+    expect(storedData.hashedPassword).not.toBe(req.body.password);
+    
+    const isPasswordHashed = await bcrypt.compare(req.body.password, storedData.hashedPassword);
+    expect(isPasswordHashed).toBe(true);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ email: "user@example.com", npwp: "505064" }));
   });
 
