@@ -1,45 +1,62 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function AjukanPajakPage() {
-  const router = useRouter();
-  const [taxType, setTaxType] = useState("");
-  const [amount, setAmount] = useState("");
-  const [error, setError] = useState("");
-  const [reference, setReference] = useState(null);
+  const router = useRouter()
+  const [taxType, setTaxType] = useState('')
+  const [amount, setAmount] = useState('')
+  const [error, setError] = useState('')
+  const [reference, setReference] = useState(null)
+  const [userData, setUserData] = useState({ name: '', npwp: '' })
+
+  // Ambil data pengguna dari localStorage saat pertama kali komponen dimuat
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      const name = localStorage.getItem('name')
+      const npwp = localStorage.getItem('npwp')
+      setUserData({
+        name: name || '',
+        npwp: npwp || '',
+      })
+    } else {
+      // Jika tidak ada token, arahkan ke halaman login
+      router.push('/login')
+    }
+  }, [router])
 
   const handleAmountChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value
     if (/^\d*$/.test(value)) {
-      setAmount(value);
+      setAmount(value)
     }
-  };
+  }
 
   const handleSubmit = () => {
-    const amt = parseFloat(amount);
+    const amt = parseFloat(amount)
     if (!taxType || isNaN(amt) || amt < 10000) {
-      setError("Jumlah pajak minimal Rp10.000 dan jenis pajak wajib diisi");
-      return;
+      setError('Jumlah pajak minimal Rp10.000 dan jenis pajak wajib diisi')
+      return
     }
 
-    setError("");
+    setError('')
     const response = {
-      taxId: `TAX2025-${Math.floor(Math.random() * 1000).toString().padStart(3, "0")}`,
+      taxId: `TAX2025-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
       taxType,
       amount: amt,
       date: new Date().toLocaleString(),
-    };
-    setReference(response);
-  };
+    }
+    setReference(response)
+  }
 
   const resetForm = () => {
-    setTaxType("");
-    setAmount("");
-    setError("");
-    setReference(null);
-  };
+    setTaxType('')
+    setAmount('')
+    setError('')
+    setReference(null)
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
@@ -47,6 +64,27 @@ export default function AjukanPajakPage() {
         {!reference ? (
           <>
             <h2 className="text-2xl font-bold text-gray-800">Formulir Pengajuan Pajak</h2>
+            
+            <div>
+              <label className="block text-gray-700 mb-2">Nama</label>
+              <input
+                type="text"
+                value={userData.name}
+                readOnly
+                className="w-full p-2 border rounded-md bg-white text-gray-800"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 mb-2">NPWP</label>
+              <input
+                type="text"
+                value={userData.npwp}
+                readOnly
+                className="w-full p-2 border rounded-md bg-white text-gray-800"
+              />
+            </div>
+
             <div>
               <label className="block text-gray-700 mb-2">Jenis Pajak</label>
               <select
@@ -98,7 +136,7 @@ export default function AjukanPajakPage() {
                 Ajukan Lagi
               </button>
               <button
-                onClick={() => router.push("/")}
+                onClick={() => router.push('/')}
                 className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
               >
                 Kembali ke Home
@@ -108,5 +146,5 @@ export default function AjukanPajakPage() {
         )}
       </div>
     </div>
-  );
+  )
 }

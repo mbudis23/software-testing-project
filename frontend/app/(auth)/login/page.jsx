@@ -15,18 +15,17 @@ export default function LoginPage() {
       return
     }
 
-    // Dummy auth
-    const dummyUser = {
-      email: 'user@example.com',
-      password: '123456',
-      name: 'johndoe'
-    }
+    // Ambil data pengguna yang terdaftar dari localStorage
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || []
+    const loggedInUser = storedUsers.find(user => user.email === email)
 
-    if (email === dummyUser.email && password === dummyUser.password) {
-        localStorage.setItem('token', 'dummy-token')
-        localStorage.setItem('name', dummyUser.name) // pastikan dummyUser punya properti `name`
-        router.push('/')
-        } else {
+    if (loggedInUser && loggedInUser.password === password) {
+      // Jika ditemukan pengguna dan password cocok
+      localStorage.setItem('token', 'dummy-token')
+      localStorage.setItem('name', loggedInUser.name)
+      localStorage.setItem('npwp', loggedInUser.npwp)
+      router.push('/') // Redirect ke halaman utama setelah login berhasil
+    } else {
       setError('Email atau password salah')
     }
   }

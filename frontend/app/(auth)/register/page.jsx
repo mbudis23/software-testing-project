@@ -7,13 +7,14 @@ export default function RegisterPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [npwp, setNpwp] = useState('')  // Menambahkan state untuk NPWP
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
   const handleRegister = (e) => {
     e.preventDefault()
-    if (!name || !email || !password) {
-      setError('Nama, email, dan password wajib diisi')
+    if (!name || !email || !password || !npwp) {  // Pastikan NPWP juga terisi
+      setError('Nama, email, password, dan NPWP wajib diisi')
       return
     }
 
@@ -25,13 +26,19 @@ export default function RegisterPage() {
       return
     }
 
-    const newUser = { name, email, password }
+    const newUser = { name, email, password, npwp }  // Menambahkan NPWP ke data user baru
     localStorage.setItem('users', JSON.stringify([...existingUsers, newUser]))
     setSuccess('Registrasi berhasil! Silakan login.')
     setError('')
     setTimeout(() => {
       router.push('/login')
     }, 1500)
+  }
+
+  const handleNpwpChange = (e) => {
+    // Hanya izinkan angka dalam input NPWP
+    const value = e.target.value.replace(/[^0-9]/g, '')  // Menghapus karakter selain angka
+    setNpwp(value)
   }
 
   return (
@@ -48,6 +55,16 @@ export default function RegisterPage() {
               className="w-full px-3 py-2 border rounded text-gray-700"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1 text-gray-950">NPWP</label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border rounded text-gray-700"
+              value={npwp}
+              onChange={handleNpwpChange}  // Menggunakan handleNpwpChange
               required
             />
           </div>
