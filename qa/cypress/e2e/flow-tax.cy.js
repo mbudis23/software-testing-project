@@ -1,51 +1,38 @@
-describe('Sistem Pengajuan Pajak', () => {
-
+describe('Sistem Pengajuan Pajak - Versi NPWP Saja', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
   });
 
-  // ========================
-  // 💻 Halaman Home (/)
-  // ========================
-  describe('Halaman Home', () => {
+  // ========== HOME PAGE ==========
+  describe('HomePage (/)', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000/');
     });
 
-    it('menampilkan error jika nama dan NPWP kosong', () => {
-      cy.contains('Ajukan Pajak').click();
-      cy.contains('Nama dan NPWP harus diisi!').should('be.visible');
-    });
-
-    it('menampilkan error jika NPWP tidak 16 digit', () => {
-      cy.get('input[placeholder="Masukkan Nama"]').type('Budi');
+    it('Menampilkan error jika NPWP tidak 16 digit', () => {
       cy.get('input[placeholder="Masukkan NPWP (16 digit)"]').type('12345');
       cy.contains('Ajukan Pajak').click();
       cy.contains('NPWP harus terdiri dari 16 digit').should('be.visible');
     });
 
-    it('berhasil simpan data dan redirect ke /form', () => {
-      cy.get('input[placeholder="Masukkan Nama"]').type('Budi');
+    it('Menyimpan NPWP valid dan redirect ke /form', () => {
       cy.get('input[placeholder="Masukkan NPWP (16 digit)"]').type('1234567890123456');
       cy.contains('Ajukan Pajak').click();
 
       cy.url().should('include', '/form');
       cy.window().then(win => {
-        expect(win.localStorage.getItem('name')).to.equal('Budi');
         expect(win.localStorage.getItem('npwp')).to.equal('1234567890123456');
       });
     });
 
-    it('navigasi ke halaman cek bukti pengajuan', () => {
+    it('Navigasi ke halaman cek bukti', () => {
       cy.contains('Cek Bukti Pengajuan').click();
       cy.url().should('include', '/cek');
     });
   });
 
-  // ========================
-  // 📄 Halaman Form Pajak (/form)
-  // ========================
-  describe('Halaman Pengajuan Pajak', () => {
+  // ========== FORM PAGE ==========
+  describe('AjukanPajakPage (/form)', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000/form', {
         onBeforeLoad(win) {
@@ -54,28 +41,28 @@ describe('Sistem Pengajuan Pajak', () => {
       });
     });
 
-    it('menampilkan error jika jenis pajak dan jumlah kosong', () => {
+    it('Menolak jika jumlah kosong dan jenis pajak belum dipilih', () => {
       cy.contains('Ajukan Pembayaran').click();
       cy.contains('Jumlah pajak minimal Rp10.000 dan jenis pajak wajib diisi').should('be.visible');
     });
 
-    it('menampilkan error jika jumlah < 10000', () => {
+    it('Menolak jika jumlah < 10000', () => {
       cy.get('#taxType').select('Pajak Penghasilan');
-      cy.get('#amount').type('9000');
+      cy.get('#amount').type('5000');
       cy.contains('Ajukan Pembayaran').click();
       cy.contains('Jumlah pajak minimal Rp10.000').should('be.visible');
     });
 
-    it('menampilkan error jika NPWP di localStorage tidak valid', () => {
+    it('Menolak jika NPWP di localStorage tidak valid', () => {
       cy.window().then(win => win.localStorage.setItem('npwp', '123'));
       cy.reload();
-      cy.get('#taxType').select('Pajak Kendaraan');
-      cy.get('#amount').type('20000');
+      cy.get('#taxType').select('Pajak Penghasilan');
+      cy.get('#amount').type('15000');
       cy.contains('Ajukan Pembayaran').click();
       cy.contains('NPWP harus terdiri dari 16 digit').should('be.visible');
     });
 
-    it('berhasil submit dan menampilkan bukti pengajuan', () => {
+    it('Menampilkan bukti pengajuan jika input valid', () => {
       cy.get('#taxType').select('Pajak Kendaraan');
       cy.get('#amount').type('25000');
       cy.contains('Ajukan Pembayaran').click();
@@ -87,22 +74,22 @@ describe('Sistem Pengajuan Pajak', () => {
       cy.contains('1234567890123456').should('exist');
     });
 
-    it('dapat mengklik "Ajukan Lagi" dan reset form', () => {
-      cy.get('#taxType').select('Pajak Penghasilan');
+    it('Reset form saat klik "Ajukan Lagi"', () => {
+      cy.get('#taxType').select('Pajak Kendaraan');
       cy.get('#amount').type('40000');
       cy.contains('Ajukan Pembayaran').click();
       cy.contains('Ajukan Lagi').click();
+
       cy.get('#taxType').should('have.value', '');
       cy.get('#amount').should('have.value', '');
     });
 
-    it('dapat kembali ke halaman home', () => {
+    it('Kembali ke Home dari halaman bukti', () => {
       cy.get('#taxType').select('Pajak Penghasilan');
-      cy.get('#amount').type('30000');
+      cy.get('#amount').type('60000');
       cy.contains('Ajukan Pembayaran').click();
       cy.contains('Kembali ke Home').click();
       cy.url().should('eq', 'http://localhost:3000/');
     });
   });
-
 });

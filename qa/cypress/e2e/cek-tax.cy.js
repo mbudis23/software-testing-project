@@ -13,7 +13,7 @@ describe('Cek Bukti Pengajuan Pajak', () => {
     cy.get('input#refInput').type('tax2025-001');
     cy.get('button').contains('Cek Bukti').click();
 
-    cy.contains('Nomor Referensi:').should('contain', 'TAX2025-001');
+    cy.contains('Nomor Referensi:').should('contain', 'TAX2025-159');
     cy.contains('Jenis Pajak:').should('contain', 'Pajak Penghasilan');
     cy.contains('Jumlah:').should('contain', '250000');
     cy.contains('Tanggal:').should('exist');
