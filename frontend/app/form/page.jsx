@@ -10,7 +10,8 @@ export default function AjukanPajakPage() {
   const [reference, setReference] = useState(null);
 
   // Ambil NPWP dari localStorage (dari HomePage)
-  const npwp = localStorage.getItem('npwp');
+  // const npwp = localStorage.getItem('npwp');
+  
 
   const handleAmountChange = (e) => {
     const value = e.target.value;
