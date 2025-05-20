@@ -3,7 +3,7 @@ const TaxPayment = require("../models/TaxPayment");
 
 const generateReferenceId = () => `TAX${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, "0")}`;
 
-const isValidNpwp = (npwp) => /^[0-9]{6}$/.test(npwp);
+const isValidNpwp = (npwp) => /^[0-9]{16}$/.test(npwp);
 
 const submitTaxPayment = async (req, res) => {
   const { tax_type, amount, npwp } = req.body;
@@ -18,7 +18,7 @@ const submitTaxPayment = async (req, res) => {
 
   const userExists = await admin.database().ref(`users/${npwp}`).once('value');
   if (!userExists.exists()) {
-    return res.status(404).json({ error: "Invalid NPWP. User not found" });
+    return res.status(404).json({ error: "Invalid NPWP" });
   }
 
   if (amount < 0) {
