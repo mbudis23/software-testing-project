@@ -1,6 +1,16 @@
-const { getUserByNpwp } = require("../../src/controllers/userController");
+const { getUserByNpwp } = require("../../../src/controllers/userController");
 
 describe("getUserByNpwp Function Tests", () => {
+  let req, res;
+
+  beforeEach(() => {
+    req = { params: {} };
+    res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+  });
+  
   test("Retrieve user data with valid NPWP", async () => {
     const req = { params: { npwp: "123456" } };
     const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
