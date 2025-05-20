@@ -73,4 +73,19 @@ describe("Get Tax Status Function Tests", () => {
       error: "An error occurred while retrieving tax payment status: Database error",
     });
   });
+
+  test("Handles database errors correctly", async () => {
+    req.params = { referenceId: "TAX2025-629" };
+    
+    admin.database().ref = jest.fn(() => ({
+      get: jest.fn().mockRejectedValue(new Error("Database error occurred")),
+    }));
+
+    await getTaxStatus(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({
+      error: "An error occurred while retrieving tax payment status: Database error occurred",
+    });
+  });
 });
