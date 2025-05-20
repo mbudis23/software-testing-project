@@ -1,9 +1,19 @@
-const { getTaxStatus } = require("../../src/controllers/taxController");
-const admin = require("../../configs/firebaseConfig");
+const { getTaxStatus } = require("../../../src/controllers/taxController");
+const admin = require("../../../configs/firebaseConfig");
 
 describe("Get Tax Status Function Tests", () => {
+  let req, res;
+
+  beforeEach(() => {
+    req = { params: {} };
+    res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+  });
+  
   test("Successfully retrieve tax payment status", async () => {
-    const req = { params: { referenceId: "TAX2025-123" } };
+    const req = { params: { referenceId: "TAX2025-629" } };
     const res = {
       json: jest.fn(),
       status: jest.fn().mockReturnThis(),
@@ -12,7 +22,7 @@ describe("Get Tax Status Function Tests", () => {
     admin.database().ref = jest.fn(() => ({
       get: jest.fn().mockResolvedValue({
         exists: () => true,
-        val: () => ({ referenceId: "TAX2025-123", status: "Paid", amount: 500000 }),
+        val: () => ({ referenceId: "TAX2025-629", status: "Paid", amount: 500000 }),
       }),
     }));
 
@@ -20,7 +30,7 @@ describe("Get Tax Status Function Tests", () => {
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
-      referenceId: "TAX2025-123",
+      referenceId: "TAX2025-629",
       status: "Paid",
       amount: 500000,
     });
@@ -45,8 +55,8 @@ describe("Get Tax Status Function Tests", () => {
     expect(res.json).toHaveBeenCalledWith({ error: "Tax payment request not found" });
   });
 
-  test("Should return error if Firebase database fails", async () => {
-    const req = { params: { referenceId: "TAX2025-123" } };
+  test("Error if Firebase database fails", async () => {
+    const req = { params: { referenceId: "TAX2025-629" } };
     const res = {
       json: jest.fn(),
       status: jest.fn().mockReturnThis(),
