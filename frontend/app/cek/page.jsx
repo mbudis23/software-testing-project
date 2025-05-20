@@ -1,5 +1,5 @@
 "use client";
-
+import React from 'react'
 import { useState } from "react";
 
 export default function CekBuktiPengajuan() {
@@ -44,8 +44,9 @@ export default function CekBuktiPengajuan() {
         <h2 className="text-xl font-bold text-gray-800 text-center">Cek Bukti Pengajuan</h2>
 
         <div>
-          <label className="block text-gray-700 mb-2">Nomor Referensi</label>
+          <label htmlFor="refInput" className="block text-gray-700 mb-2">Nomor Referensi</label>
           <input
+            id="refInput"
             type="text"
             value={inputRef}
             onChange={handleChange}
