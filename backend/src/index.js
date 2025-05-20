@@ -6,10 +6,10 @@ app.use(cors());
 app.use(express.json());
 
 const userRoutes = require("../src/routes/userRoutes");
-const authRoutes = require("../src/routes/authRoutes");
+const taxRoutes = require("../src/routes/taxRoutes");
 
 app.use("/user", userRoutes);
-app.use("/account", authRoutes);
+app.use("/tax", taxRoutes);
 
 // Run the server
 const PORT = process.env.PORT || 3000;
