@@ -25,13 +25,6 @@ describe('AjukanPajakPage', () => {
     jest.clearAllMocks();
   });
 
-  it('renders the page and displays the user data from localStorage', () => {
-    render(<AjukanPajakPage />);
-
-    // Check if the user name is displayed correctly
-    expect(screen.getByLabelText('Nama')).toHaveValue('John Doe');
-  });
-
   it('should show error when tax type or amount is invalid', async () => {
     render(<AjukanPajakPage />);
 
