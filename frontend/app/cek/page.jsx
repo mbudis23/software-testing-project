@@ -22,15 +22,26 @@ export default function CekBuktiPengajuan() {
     },
   ];
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     const ref = inputRef.trim().toUpperCase();
-    const found = dummyData.find((item) => item.taxId === ref);
-    if (found) {
-      setData(found);
-      setError("");
-    } else {
+
+    if (!ref) {
+      setError("Nomor referensi tidak boleh kosong.");
       setData(null);
-      setError("Data tidak ditemukan. Pastikan nomor referensi benar.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/tax/status/${ref}`);
+
+      if (!response.ok) throw new Error("Data tidak ditemukan. Pastikan nomor referensi benar.");
+
+      const data = await response.json();
+      setData(data);
+      setError("");
+    } catch (error) {
+      setData(null);
+      setError(error.message);
     }
   };
 
@@ -66,10 +77,10 @@ export default function CekBuktiPengajuan() {
 
         {data && (
           <div className="border-t pt-4 text-sm text-gray-700">
-            <p><strong>Nomor Referensi:</strong> {data.taxId}</p>
-            <p><strong>Jenis Pajak:</strong> {data.taxType}</p>
+            <p><strong>Nomor Referensi:</strong> {data.referenceId}</p>
+            <p><strong>Jenis Pajak:</strong> {data.tax_type}</p>
             <p><strong>Jumlah:</strong> Rp {data.amount}</p>
-            <p><strong>Tanggal:</strong> {data.date}</p>
+            <p><strong>Tanggal:</strong> {data.submission_date}</p>
           </div>
         )}
       </div>

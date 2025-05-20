@@ -7,7 +7,20 @@ export default function HomePage() {
   const router = useRouter();
   const [npwp, setNpwp] = useState(""); // NPWP yang bisa diinput
   const [error, setError] = useState(""); // Error jika NPWP kosong
-  const handleSubmit = () => {
+  
+  const checkUserExists = async (npwp) => {
+    try {
+      const response = await fetch(`http://localhost:5000/user/${npwp}`);
+      if (!response.ok) throw new Error("NPWP tidak ditemukan");
+
+      return await response.json();
+    } catch (error) {
+      setError(error.message);
+      return null;
+    }
+  };
+
+  const handleSubmit = async () => {
     // Validasi panjang NPWP harus 16 digit
     if (npwp.length !== 16) {
       setError("NPWP harus terdiri dari 16 digit");
@@ -16,9 +29,11 @@ export default function HomePage() {
 
     // Menyimpan data user ke localStorage jika diperlukan
     localStorage.setItem("npwp", npwp);
-
-    // Arahkan pengguna ke halaman pengajuan pajak
-    router.push("/form");
+    const user = await checkUserExists(npwp);
+    if (!user) 
+      return;
+    else
+      router.push("/form");
   };
 
   return (
