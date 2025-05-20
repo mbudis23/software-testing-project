@@ -1,0 +1,450 @@
+{
+  "info": {
+    "_postman_id": "a94a4c42-aaa1-4d36-a7bb-5cb94231a7f9",
+    "name": "Blackbox Test - Tax API v2 (Adjusted for Valid NPWP)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC-01 Submit Valid",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:5000/tax/submit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "tax",
+            "submit"
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tax_type\": \"Income Tax\",\n  \"amount\": 1000000,\n  \"npwp\": \"1234567890123456\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.message).to.eql(\"Tax payment submitted successfully\");",
+              "pm.expect(jsonData).to.have.property(\"referenceId\");"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-02 Missing NPWP",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:5000/tax/submit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "tax",
+            "submit"
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tax_type\": \"Income Tax\",\n  \"amount\": 1000000\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.error).to.include(\"NPWP, tax type, and amount are required\");"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-03 Missing Amount",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:5000/tax/submit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "tax",
+            "submit"
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tax_type\": \"Income Tax\",\n  \"npwp\": \"1234567890123456\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.error).to.include(\"NPWP, tax type, and amount are required\");"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-04 Missing Tax Type",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:5000/tax/submit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "tax",
+            "submit"
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 1000000,\n  \"npwp\": \"1234567890123456\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.error).to.include(\"NPWP, tax type, and amount are required\");"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-05 All Fields Missing",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:5000/tax/submit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "tax",
+            "submit"
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.error).to.include(\"NPWP, tax type, and amount are required\");"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-06 NPWP Not Found",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:5000/tax/submit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "tax",
+            "submit"
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tax_type\": \"Income Tax\",\n  \"amount\": 1000000,\n  \"npwp\": \"0000000000000000\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.error).to.include(\"Invalid NPWP\");"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-07 Negative Amount",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:5000/tax/submit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "tax",
+            "submit"
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tax_type\": \"Income Tax\",\n  \"amount\": -1000,\n  \"npwp\": \"1234567890123456\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.error).to.include(\"Amount must be positive\");"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-08 Get Tax Status Valid",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5000/tax/status/TAX2025-001",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "tax",
+            "status",
+            "TAX2025-001"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-09 Get Tax Status Not Found",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5000/tax/status/TAX9999-999",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "tax",
+            "status",
+            "TAX9999-999"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.error).to.include(\"Tax payment request not found\");"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-10 Get User Valid",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5000/user/1234567890123456",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "user",
+            "1234567890123456"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-11 Get User Not Found",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5000/user/9999999999999999",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "user",
+            "9999999999999999"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.error).to.include(\"NPWP not found\");"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-12 Get User Invalid Format",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5000/user/abc123",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "user",
+            "abc123"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.error).to.include(\"Invalid NPWP format\");"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
