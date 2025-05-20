@@ -1,7 +1,7 @@
 const admin = require("../../configs/firebaseConfig");
 const User = require("../models/User");
 
-const isValidNpwp = (npwp) => /^[0-9]{6}$/.test(npwp);
+const isValidNpwp = (npwp) => /^[0-9]{16}$/.test(npwp);
 
 const getUserByNpwp = async (req, res) => {
     const { npwp } = req.params;
