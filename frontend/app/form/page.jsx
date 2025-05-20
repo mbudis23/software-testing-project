@@ -9,10 +9,6 @@ export default function AjukanPajakPage() {
   const [error, setError] = useState('');
   const [reference, setReference] = useState(null);
 
-  // Ambil NPWP dari localStorage (dari HomePage)
-  // const npwp = localStorage.getItem('npwp');
-  
-
   const handleAmountChange = (e) => {
     const value = e.target.value;
     if (/^\d*$/.test(value)) {
@@ -20,26 +16,39 @@ export default function AjukanPajakPage() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    var npwp = localStorage.getItem('npwp');
+
     const amt = parseFloat(amount);
     if (!taxType || isNaN(amt) || amt < 10000) {
-      setError('Jumlah pajak minimal Rp10.000 dan jenis pajak wajib diisi');
-      return;
-    }
-    if (npwp.length !== 16) {
-      setError('NPWP harus terdiri dari 16 digit');
+      setError("Jumlah pajak minimal Rp10.000 dan jenis pajak wajib diisi");
       return;
     }
 
-    setError('');
-    const response = {
-      taxId: `TAX2025-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
-      taxType,
-      amount: amt,
-      npwp,
-      date: new Date().toLocaleString(),
+    setError("");
+
+    const taxData = {
+      "tax_type": taxType,
+      "amount": amount,
+      "npwp": npwp
     };
-    setReference(response);
+
+    try {
+      const response = await fetch("http://localhost:5000/tax/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(taxData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || "Gagal mengajukan pajak");
+
+      localStorage.setItem("referenceId", data.referenceId);
+      setReference(data);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const resetForm = () => {
@@ -97,11 +106,11 @@ export default function AjukanPajakPage() {
         ) : (
           <div className="text-center space-y-3 text-gray-800">
             <h2 className="text-2xl font-bold text-green-700">Bukti Pengajuan</h2>
-            <p>Nomor Referensi: <strong>{reference.taxId}</strong></p>
-            <p>Jenis Pajak: {reference.taxType}</p>
+            <p>Nomor Referensi: <strong>{reference.referenceId}</strong></p>
+            <p>Jenis Pajak: {reference.tax_type}</p>
             <p>Jumlah: Rp {reference.amount}</p>
             <p>NPWP: {reference.npwp}</p>
-            <p>Tanggal: {reference.date}</p>
+            <p>Tanggal: {reference.submission_date}</p>
             <div className="flex justify-center gap-4 mt-4">
               <button
                 onClick={resetForm}
