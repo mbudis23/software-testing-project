@@ -1,25 +1,19 @@
 {
   "info": {
     "_postman_id": "a94a4c42-aaa1-4d36-a7bb-5cb94231a7f9",
-    "name": "Blackbox Test - Tax API v2 (Adjusted for Valid NPWP)",
+    "name": "Blackbox Test - Software Testing",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "TC-01 Submit Valid",
+      "name": "Submit Valid",
       "request": {
         "method": "POST",
         "url": {
-          "raw": "http://localhost:5000/tax/submit",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "tax",
-            "submit"
-          ]
+          "raw": "https://software-testing-project.vercel.app/tax/submit",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["tax", "submit"]
         },
         "header": [
           {
@@ -48,20 +42,14 @@
       ]
     },
     {
-      "name": "TC-02 Missing NPWP",
+      "name": "Missing NPWP",
       "request": {
         "method": "POST",
         "url": {
-          "raw": "http://localhost:5000/tax/submit",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "tax",
-            "submit"
-          ]
+          "raw": "https://software-testing-project.vercel.app/tax/submit",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["tax", "submit"]
         },
         "header": [
           {
@@ -89,20 +77,14 @@
       ]
     },
     {
-      "name": "TC-03 Missing Amount",
+      "name": "Missing Amount",
       "request": {
         "method": "POST",
         "url": {
-          "raw": "http://localhost:5000/tax/submit",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "tax",
-            "submit"
-          ]
+          "raw": "https://software-testing-project.vercel.app/tax/submit",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["tax", "submit"]
         },
         "header": [
           {
@@ -130,20 +112,14 @@
       ]
     },
     {
-      "name": "TC-04 Missing Tax Type",
+      "name": "Missing Tax Type",
       "request": {
         "method": "POST",
         "url": {
-          "raw": "http://localhost:5000/tax/submit",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "tax",
-            "submit"
-          ]
+          "raw": "https://software-testing-project.vercel.app/tax/submit",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["tax", "submit"]
         },
         "header": [
           {
@@ -171,20 +147,14 @@
       ]
     },
     {
-      "name": "TC-05 All Fields Missing",
+      "name": "All Fields Missing",
       "request": {
         "method": "POST",
         "url": {
-          "raw": "http://localhost:5000/tax/submit",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "tax",
-            "submit"
-          ]
+          "raw": "https://software-testing-project.vercel.app/tax/submit",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["tax", "submit"]
         },
         "header": [
           {
@@ -212,20 +182,14 @@
       ]
     },
     {
-      "name": "TC-06 NPWP Not Found",
+      "name": "NPWP Not Found",
       "request": {
         "method": "POST",
         "url": {
-          "raw": "http://localhost:5000/tax/submit",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "tax",
-            "submit"
-          ]
+          "raw": "https://software-testing-project.vercel.app/tax/submit",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["tax", "submit"]
         },
         "header": [
           {
@@ -253,20 +217,14 @@
       ]
     },
     {
-      "name": "TC-07 Negative Amount",
+      "name": "Negative Amount",
       "request": {
         "method": "POST",
         "url": {
-          "raw": "http://localhost:5000/tax/submit",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "tax",
-            "submit"
-          ]
+          "raw": "https://software-testing-project.vercel.app/tax/submit",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["tax", "submit"]
         },
         "header": [
           {
@@ -294,21 +252,14 @@
       ]
     },
     {
-      "name": "TC-08 Get Tax Status Valid",
+      "name": "Get Tax Status Valid",
       "request": {
         "method": "GET",
         "url": {
-          "raw": "http://localhost:5000/tax/status/TAX2025-001",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "tax",
-            "status",
-            "TAX2025-001"
-          ]
+          "raw": "https://software-testing-project.vercel.app/tax/status/TAX2025-159",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["tax", "status", "TAX2025-159"]
         }
       },
       "event": [
@@ -324,21 +275,14 @@
       ]
     },
     {
-      "name": "TC-09 Get Tax Status Not Found",
+      "name": "Get Tax Status Not Found",
       "request": {
         "method": "GET",
         "url": {
-          "raw": "http://localhost:5000/tax/status/TAX9999-999",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "tax",
-            "status",
-            "TAX9999-999"
-          ]
+          "raw": "https://software-testing-project.vercel.app/tax/status/TAX9999-999",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["tax", "status", "TAX9999-999"]
         }
       },
       "event": [
@@ -356,20 +300,14 @@
       ]
     },
     {
-      "name": "TC-10 Get User Valid",
+      "name": "Get User Valid",
       "request": {
         "method": "GET",
         "url": {
-          "raw": "http://localhost:5000/user/1234567890123456",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "user",
-            "1234567890123456"
-          ]
+          "raw": "https://software-testing-project.vercel.app/user/1234567890123456",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["user", "1234567890123456"]
         }
       },
       "event": [
@@ -385,20 +323,14 @@
       ]
     },
     {
-      "name": "TC-11 Get User Not Found",
+      "name": "Get User Not Found",
       "request": {
         "method": "GET",
         "url": {
-          "raw": "http://localhost:5000/user/9999999999999999",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "user",
-            "9999999999999999"
-          ]
+          "raw": "https://software-testing-project.vercel.app/user/9999999999999999",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["user", "9999999999999999"]
         }
       },
       "event": [
@@ -416,20 +348,14 @@
       ]
     },
     {
-      "name": "TC-12 Get User Invalid Format",
+      "name": "Get User Invalid Format",
       "request": {
         "method": "GET",
         "url": {
-          "raw": "http://localhost:5000/user/abc123",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "user",
-            "abc123"
-          ]
+          "raw": "https://software-testing-project.vercel.app/user/abc123",
+          "protocol": "https",
+          "host": ["software-testing-project.vercel.app"],
+          "path": ["user", "abc123"]
         }
       },
       "event": [
