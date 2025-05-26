@@ -1,6 +1,6 @@
 describe('Cek Bukti Pengajuan Pajak', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/cek');
+    cy.visit('https://software-testing-project-o55d.vercel.app/cek');
   });
 
   it('menampilkan form dan input tersedia', () => {

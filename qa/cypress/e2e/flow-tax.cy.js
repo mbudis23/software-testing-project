@@ -6,7 +6,7 @@ describe('Sistem Pengajuan Pajak - Versi NPWP Saja', () => {
   // ========== HOME PAGE ==========
   describe('HomePage (/)', () => {
     beforeEach(() => {
-      cy.visit('http://localhost:3000/');
+      cy.visit('https://software-testing-project-o55d.vercel.app/');
     });
 
     it('Menampilkan error jika NPWP tidak 16 digit', () => {
@@ -34,7 +34,7 @@ describe('Sistem Pengajuan Pajak - Versi NPWP Saja', () => {
   // ========== FORM PAGE ==========
   describe('AjukanPajakPage (/form)', () => {
     beforeEach(() => {
-      cy.visit('http://localhost:3000/form', {
+      cy.visit('https://software-testing-project-o55d.vercel.app/form', {
         onBeforeLoad(win) {
           win.localStorage.setItem('npwp', '1234567890123456');
         }
