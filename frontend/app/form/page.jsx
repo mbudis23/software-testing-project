@@ -34,7 +34,7 @@ export default function AjukanPajakPage() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/tax/submit", {
+      const response = await fetch("https://software-testing-project.vercel.app/tax/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(taxData),

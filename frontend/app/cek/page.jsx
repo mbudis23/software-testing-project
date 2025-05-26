@@ -32,7 +32,7 @@ export default function CekBuktiPengajuan() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/tax/status/${ref}`);
+      const response = await fetch(`https://software-testing-project.vercel.app/tax/status/${ref}`);
 
       if (!response.ok) throw new Error("Data tidak ditemukan. Pastikan nomor referensi benar.");
 

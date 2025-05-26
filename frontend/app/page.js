@@ -10,7 +10,7 @@ export default function HomePage() {
   
   const checkUserExists = async (npwp) => {
     try {
-      const response = await fetch(`http://localhost:5000/user/${npwp}`);
+      const response = await fetch(`https://software-testing-project.vercel.app/user/${npwp}`);
       if (!response.ok) throw new Error("NPWP tidak ditemukan");
 
       return await response.json();
