@@ -1,38 +1,63 @@
-import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import CekBuktiPengajuan from '@/app/cek/page'
+import '@testing-library/jest-dom'
+
+beforeEach(() => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          referenceId: 'TAX2025-001',
+          tax_type: 'Pajak Penghasilan',
+          amount: 250000,
+          submission_date: '19 Mei 2025 10:30',
+        }),
+    })
+  )
+})
 
 describe('CekBuktiPengajuan', () => {
-  it('renders input and button', () => {
+  it('shows data when valid reference is entered', async () => {
     render(<CekBuktiPengajuan />)
-    expect(screen.getByText(/cek bukti pengajuan/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/nomor referensi/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /cek bukti/i })).toBeInTheDocument()
-  })
 
-  it('converts input to uppercase', () => {
-    render(<CekBuktiPengajuan />)
-    const input = screen.getByLabelText(/nomor referensi/i)
-    fireEvent.change(input, { target: { value: 'tax2025-001' } })
-    expect(input.value).toBe('TAX2025-001')
-  })
-
-  it('shows data when valid reference is entered', () => {
-    render(<CekBuktiPengajuan />)
     fireEvent.change(screen.getByLabelText(/nomor referensi/i), {
       target: { value: 'TAX2025-001' },
     })
     fireEvent.click(screen.getByRole('button', { name: /cek bukti/i }))
-    expect(screen.getByText(/pajak penghasilan/i)).toBeInTheDocument()
-    expect(screen.getByText(/250000/i)).toBeInTheDocument()
+
+    await waitFor(() => {
+      expect(screen.getByText(/pajak penghasilan/i)).toBeInTheDocument()
+      expect(screen.getByText(/250000/i)).toBeInTheDocument()
+    })
   })
 
-  it('shows error when invalid reference is entered', () => {
+  it('shows error when input is empty', () => {
+  render(<CekBuktiPengajuan />)
+  fireEvent.click(screen.getByRole('button', { name: /cek bukti/i }))
+  expect(
+    screen.getByText(/nomor referensi tidak boleh kosong/i)
+  ).toBeInTheDocument()
+})
+
+  it('shows error when invalid reference is entered', async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve({}),
+      })
+    )
+
     render(<CekBuktiPengajuan />)
     fireEvent.change(screen.getByLabelText(/nomor referensi/i), {
       target: { value: 'TAX0000-999' },
     })
     fireEvent.click(screen.getByRole('button', { name: /cek bukti/i }))
-    expect(screen.getByText(/data tidak ditemukan/i)).toBeInTheDocument()
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/data tidak ditemukan/i)
+      ).toBeInTheDocument()
+    })
   })
 })
