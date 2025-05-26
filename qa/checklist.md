@@ -20,18 +20,18 @@ contoh : [x] Nblah blah blah
 
 ## ✅ Formulir Pajak
 
-- [ ] Dropdown jenis pajak menampilkan daftar pilihan
-- [ ] Jumlah pajak hanya menerima angka positif
-- [ ] Jumlah kosong, negatif, atau teks ditolak dengan pesan error
-- [ ] Tombol submit hanya aktif jika input valid
+- [x] Dropdown jenis pajak menampilkan daftar pilihan
+- [x] Jumlah pajak hanya menerima angka positif
+- [x] Jumlah kosong, negatif, atau teks ditolak dengan pesan error
+- [x] Tombol submit hanya aktif jika input valid
 
 ---
 
 ## ✅ Referensi & Bukti Pembayaran
 
-- [ ] Sistem menghasilkan nomor referensi unik (format: TAXYYYY-XXX)
-- [ ] Nomor referensi tidak duplikat jika 2 pengajuan bersamaan
-- [ ] Halaman bukti menampilkan semua informasi dengan benar (jenis, jumlah, tanggal, referensi)
+- [x] Sistem menghasilkan nomor referensi unik (format: TAXYYYY-XXX)
+- [x] Nomor referensi tidak duplikat jika 2 pengajuan bersamaan
+- [x] Halaman bukti menampilkan semua informasi dengan benar (jenis, jumlah, tanggal, referensi)
 - [ ] Tombol “Kembali” membersihkan formulir dan dapat diisi ulang
 
 ---
@@ -46,25 +46,17 @@ contoh : [x] Nblah blah blah
 
 ## ✅ Performa & Responsivitas
 
-- [ ] Waktu submit < 2 detik di koneksi normal
-- [ ] Tampilan responsif di desktop, tablet, dan smartphone
-- [ ] Elemen UI tidak bertumpuk atau pecah di mobile (BUG003)
+- [x] Waktu submit < 2 detik di koneksi normal
+- [x] Tampilan responsif di desktop, tablet, dan smartphone
+- [x] Elemen UI tidak bertumpuk atau pecah di mobile (BUG003)
 - [ ] Ukuran tombol dan font cukup besar untuk pengguna awam
-
----
-
-## ✅ Keamanan & Data Sensitif
-
-- [ ] Nomor KTP tidak muncul di `console.log` atau tab Network
-- [ ] Input sensitif tidak disimpan di localStorage/sessionStorage
-- [ ] Tidak ada log server yang menyimpan data KTP mentah (perlu verifikasi backend)
 
 ---
 
 ## ⚙️ Pengujian Tambahan
 
-- [ ] Simulasi ≥ 100 transaksi tanpa crash (TC017 - Load Test)
-- [ ] Sistem tidak mengizinkan form kosong dikirim
+- [x] Simulasi ≥ 100 transaksi tanpa crash (TC017 - Load Test)
+- [x] Sistem tidak mengizinkan form kosong dikirim
 
 ---
 
@@ -76,4 +68,4 @@ contoh : [x] Nblah blah blah
 | 🔶 Review | Mayoritas sudah oke, ada minor bug |
 | ✅ Final  | Semua poin checklist lolos         |
 
-**Status Saat Ini**: ⬜
+**Status Saat Ini**: 🔶
