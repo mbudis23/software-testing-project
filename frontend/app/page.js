@@ -50,8 +50,9 @@ export default function HomePage() {
 
         <div className="space-y-4">
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-gray-950">NPWP</label>
+            <label htmlFor="npwpInput" className="block text-sm font-medium mb-1 text-gray-950">NPWP</label>
             <input
+              id="npwpInput"
               type="text"
               inputMode="numeric"
               pattern="\d*"
