@@ -35,40 +35,32 @@ Menyediakan platform digital sederhana dan aman bagi pengguna untuk:
 
 ### 3. ✅ Functional Requirements
 
-| Kode  | Halaman    | Requirement                                                                              |
-| ----- | ---------- | ---------------------------------------------------------------------------------------- |
-| FR-01 | `/` (Home) | Sistem harus menolak submit jika nama atau NPWP kosong                                   |
-| FR-02 | `/` (Home) | Sistem harus memvalidasi bahwa NPWP terdiri dari 16 digit                                |
-| FR-03 | `/` (Home) | Sistem harus menyimpan nama dan NPWP ke `localStorage` jika valid                        |
-| FR-04 | `/` (Home) | Sistem harus melakukan redirect ke `/form` setelah submit berhasil                       |
-| FR-05 | `/` (Home) | Sistem harus mengarahkan ke halaman `/cek` ketika tombol 'Cek Bukti Pengajuan' diklik    |
-| FR-06 | `/form`    | Sistem harus menolak submit jika jenis pajak dan/atau jumlah belum diisi                 |
-| FR-07 | `/form`    | Sistem harus memvalidasi bahwa jumlah pajak minimal Rp10.000                             |
-| FR-08 | `/form`    | Sistem harus memvalidasi NPWP dari `localStorage` agar memiliki 16 digit                 |
-| FR-09 | `/form`    | Sistem harus menampilkan bukti pengajuan jika data valid                                 |
-| FR-10 | `/form`    | Sistem harus dapat mereset formulir jika pengguna klik “Ajukan Lagi”                     |
-| FR-11 | `/form`    | Sistem harus kembali ke halaman utama jika pengguna klik “Kembali ke Home”               |
-| FR-12 | `/cek`     | Sistem harus menyediakan kolom input referensi yang mengubah input menjadi huruf kapital |
-| FR-13 | `/cek`     | Sistem harus mencocokkan input referensi dengan daftar data pajak yang tersedia          |
-| FR-14 | `/cek`     | Sistem harus menampilkan pesan error jika referensi tidak ditemukan                      |
-| FR-15 | `/cek`     | Sistem harus menampilkan rincian bukti pengajuan jika referensi ditemukan                |
+| Kode  | Nama Fitur                  | Deskripsi                                                                 |
+|-------|-----------------------------|---------------------------------------------------------------------------|
+| FR00  | Autentikasi Pengguna        | Sistem memverifikasi Nama dan KTP pengguna. KTP harus 16 digit angka.     |
+| FR01  | Dropdown Jenis Pajak        | Sistem menyediakan daftar pilihan jenis pajak untuk dipilih pengguna.     |
+| FR02  | Validasi Jumlah Pajak       | Input jumlah pajak harus berupa angka positif. Tampilkan error jika salah.|
+| FR03  | Pengajuan Formulir          | Sistem memproses dan menyimpan data pajak setelah formulir dikirim.       |
+| FR04  | Nomor Referensi Unik        | Sistem menghasilkan nomor referensi transaksi dengan format unik.         |
+| FR05  | Tampilan Bukti Pembayaran   | Sistem menampilkan bukti lengkap: nomor referensi, pajak, jumlah, tanggal.|
+| FR06  | Penanganan Error & Navigasi | Sistem menampilkan pesan error dan menyediakan tombol “Kembali”.          |
 
-### 4. 🥪 Validation & Testable Criteria
+
+### 4. 🚫 Non-Functional Requirements
+
+| Kode   | Nama Kualitas Sistem       | Deskripsi                                                                 |
+|--------|----------------------------|---------------------------------------------------------------------------|
+| NFR01  | Waktu Respons              | Proses submit dan tampil bukti harus selesai dalam waktu < 2 detik.       |
+| NFR02  | Responsif di Mobile        | Tampilan tidak pecah di layar 320px–768px, tombol tetap mudah diakses.    |
+| NFR03  | Validasi Real-time         | Validasi muncul saat pengguna mengetik, tanpa perlu klik submit terlebih dahulu. |
+| NFR04  | Ketahanan Beban            | Sistem dapat memproses ≥ 100 transaksi tanpa crash atau penurunan performa.|
+
+### 5. 🥪 Validation & Testable Criteria
 
 Setiap functional requirement di atas telah diturunkan ke dalam:
 
 - **Pengujian Cypress**: untuk validasi UI/UX, interaksi user, validasi input, navigasi, dan localStorage
 - **Postman API Test Collection**: untuk pengujian endpoint backend terkait submit dan get data
-
-### 5. 🚫 Non-Functional Requirements
-
-| Kode   | Requirement                                                                                         |
-| ------ | --------------------------------------------------------------------------------------------------- |
-| NFR-01 | Sistem harus kompatibel dengan browser modern (Chrome, Firefox, Edge)                               |
-| NFR-02 | Sistem harus memberikan respon dalam waktu < 2 detik                                                |
-| NFR-03 | Semua input pengguna harus divalidasi di sisi klien (client-side validation)                        |
-| NFR-04 | Sistem harus memiliki fallback yang aman jika data tidak tersedia (e.g. input kosong, NPWP invalid) |
-| NFR-05 | Sistem harus aman dari injection melalui `input` dan hanya menerima input numerik untuk jumlah      |
 
 ## 🔧 Feature Analysis
 
@@ -136,3 +128,52 @@ Setiap functional requirement di atas telah diturunkan ke dalam:
 | TC015 | UI Responsif Mobile | Uji tampilan pada mobile (320px–768px) | -                         | Tampilan tidak pecah, tombol mudah diakses |
 | TC016 | Validasi Real-time  | Cek validasi muncul saat mengetik      | “abc”, “-100”             | Error muncul sebelum klik submit           |
 | TC017 | Beban ≥ 100 Input   | Simulasikan 100 transaksi              | Dataset batch             | Tidak ada crash, respon stabil             |
+
+## ✅ UAT Checklist – Sistem Pembayaran Pajak Online
+
+### 📋 A. Functional Requirements Checklist
+
+#### 🔐 FR00 – Autentikasi Pengguna
+
+- [x] **TC001 – Autentikasi Valid:** Input nama dan KTP benar → Lolos ke halaman formulir pembayaran
+- [x] **TC002 – KTP Kurang dari 16 digit:** Input 15 digit → Error: "Nomor KTP harus 16 digit"
+- [x] **TC003 – KTP Bukan Angka:** Input huruf/simbol → Error: "Nomor KTP harus angka"
+- [x] **TC004 – Kosong Semua:** Kosongkan nama dan KTP → Error validasi pada kedua input
+
+#### 🧾 FR01–FR02 – Formulir Pajak
+
+- [x] **TC005 – Pilih Jenis Pajak:** Pilih dari dropdown → Data terkirim
+- [x] **TC006 – Jumlah Pajak Valid:** Input 150000 → Data valid, lanjut pengiriman
+- [x] **TC007 – Jumlah Pajak Kosong:** Tidak input → Error: “Jumlah pajak harus positif”
+- [ ] **TC008 – Jumlah Negatif:** Input -100000 → Error: “Jumlah pajak harus positif”
+- [x] **TC009 – Input Non-Numerik:** Input "abcde" → Error: “Jumlah pajak harus positif”
+
+#### 📤 FR03–FR04 – Pengajuan & Nomor Referensi
+
+- [x] **TC010 – Referensi Unik Format:** Kirim data sukses → Nomor TAX2025-00X muncul, unik
+- [x] **TC011 – Bukti Pembayaran Lengkap:** Tampilkan semua info → Referensi, pajak, jumlah, tanggal
+
+#### ⚠️ FR05–FR06 – Penanganan Error & Navigasi
+
+- [x] **TC012 – Pesan Error Jumlah Kosong:** Kirim tanpa jumlah → Muncul pesan error
+- [ ] **TC013 – Tombol Kembali:** Klik tombol “Kembali” → Form kosong dan bisa diisi ulang
+
+---
+
+### 📋 B. Non-Functional Requirements Checklist
+
+#### ⚡ NFR01 – Waktu Respons
+
+- [x] **TC014 – Response Time:** Submit + tampil bukti < 2 detik
+
+#### 📱 NFR02 – Responsif di Mobile
+
+- [x] **TC015 – UI Mobile Friendly:** Layout tetap rapi di 320px–768px
+
+#### ✍️ NFR03 – Validasi Real-time
+
+- [ ] **TC016 – Validasi Saat Mengetik:** Error muncul sebelum klik submit
+
+#### 🧪 NFR04 – Ketahanan Beban
+
+- [x] **TC017 – Simulasi 100 Transaksi:** Tidak crash, respon tetap stabil
